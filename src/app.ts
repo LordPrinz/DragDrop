@@ -62,6 +62,12 @@ class ProjectInput {
 		return [enteredTitle, enteredDescription, +enteredPeople];
 	}
 
+	private clearInputs() {
+		this.titleInputElement.value = "";
+		this.descriptionInputElement.value = "";
+		this.peopleInputElement.value = "";
+	}
+
 	@autobind
 	private submitHandler(event: Event) {
 		event.preventDefault();
@@ -71,6 +77,7 @@ class ProjectInput {
 		}
 		const [title, description, people] = userInput;
 		console.log(title, description, people);
+		this.clearInputs();
 	}
 
 	private configure() {
