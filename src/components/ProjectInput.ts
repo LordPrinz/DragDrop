@@ -1,6 +1,10 @@
-// Validation
-
 import autobind from "../decorators/autobind.js";
+
+import ProjectState from "../store/ProjectState.js";
+
+const projectState = ProjectState.getInstance();
+
+// Validation
 
 interface Validatable {
 	value: string | number;
@@ -62,30 +66,30 @@ class ProjectInput {
 	peopleInputElement: HTMLInputElement;
 
 	constructor() {
-		this.templateElement = <HTMLTemplateElement>(
-			document.querySelector("#project-input")!
-		);
-		this.hostElement = <HTMLDivElement>document.querySelector("#app")!;
+		this.templateElement = document.getElementById(
+			"project-input"
+		)! as HTMLTemplateElement;
+		this.hostElement = document.getElementById("app")! as HTMLDivElement;
 
 		const importedNode = document.importNode(this.templateElement.content, true);
-		this.element = <HTMLFormElement>importedNode.firstElementChild;
+		this.element = importedNode.firstElementChild as HTMLFormElement;
 		this.element.id = "user-input";
 
-		this.titleInputElement = <HTMLInputElement>(
-			this.element.querySelector("#title")!
-		);
-		this.descriptionInputElement = <HTMLInputElement>(
-			this.element.querySelector("#description")!
-		);
-		this.peopleInputElement = <HTMLInputElement>(
-			this.element.querySelector("#people")!
-		);
+		this.titleInputElement = this.element.querySelector(
+			"#title"
+		) as HTMLInputElement;
+		this.descriptionInputElement = this.element.querySelector(
+			"#description"
+		) as HTMLInputElement;
+		this.peopleInputElement = this.element.querySelector(
+			"#people"
+		) as HTMLInputElement;
 
 		this.configure();
 		this.attach();
 	}
 
-	private gatherUserInput(): [string, string, number] | never {
+	private gatherUserInput(): [string, string, number] | void {
 		const enteredTitle = this.titleInputElement.value;
 		const enteredDescription = this.descriptionInputElement.value;
 		const enteredPeople = this.peopleInputElement.value;
@@ -94,18 +98,16 @@ class ProjectInput {
 			value: enteredTitle,
 			required: true,
 		};
-
 		const descriptionValidatable: Validatable = {
 			value: enteredDescription,
 			required: true,
 			minLength: 5,
 		};
-
 		const peopleValidatable: Validatable = {
 			value: +enteredPeople,
 			required: true,
 			min: 1,
-			max: 10,
+			max: 5,
 		};
 
 		if (
@@ -113,10 +115,11 @@ class ProjectInput {
 			!validate(descriptionValidatable) ||
 			!validate(peopleValidatable)
 		) {
-			throw new Error("Invalid input, please try again!");
+			alert("Invalid input, please try again!");
+			return;
+		} else {
+			return [enteredTitle, enteredDescription, +enteredPeople];
 		}
-
-		return [enteredTitle, enteredDescription, +enteredPeople];
 	}
 
 	private clearInputs() {
@@ -129,12 +132,11 @@ class ProjectInput {
 	private submitHandler(event: Event) {
 		event.preventDefault();
 		const userInput = this.gatherUserInput();
-		if (!Array.isArray(userInput)) {
-			return;
+		if (Array.isArray(userInput)) {
+			const [title, desc, people] = userInput;
+			projectState.addProject(title, desc, people);
+			this.clearInputs();
 		}
-		const [title, description, people] = userInput;
-		console.log(title, description, people);
-		this.clearInputs();
 	}
 
 	private configure() {
