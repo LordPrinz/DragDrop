@@ -1,13 +1,12 @@
-import Component from "./Component.js";
-import Project, { ProjectStatus } from "./Project.js";
-import ProjectItem from "./ProjectItem.js";
-import ProjectState from "../store/ProjectState.js";
-import { DragTarget } from "../types/Drag.js";
-import autobind from "../decorators/autobind.js";
+import { autobind } from "../decorators/autobind.js";
+import { DragTarget } from "../models/drag-drop.js";
+import { Project, ProjectStatus } from "../models/project.js";
+import { projectState } from "../store/project-state.js";
+import Component from "./BaseComponent.js";
 
-const projectState = ProjectState.getInstance();
+import { ProjectItem } from "./ProjectItem.js";
 
-class ProjectList
+export class ProjectList
 	extends Component<HTMLDivElement, HTMLElement>
 	implements DragTarget
 {
@@ -79,5 +78,3 @@ class ProjectList
 		}
 	}
 }
-
-export default ProjectList;

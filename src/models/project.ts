@@ -3,7 +3,7 @@ export enum ProjectStatus {
 	Finished,
 }
 
-class Project {
+export class Project {
 	constructor(
 		public id: string,
 		public title: string,
@@ -12,5 +12,3 @@ class Project {
 		public status: ProjectStatus
 	) {}
 }
-
-export default Project;

@@ -1,64 +1,10 @@
-import autobind from "../decorators/autobind.js";
+import { autobind } from "../decorators/autobind.js";
+import { projectState } from "../store/project-state.js";
+import { Validatable, validate } from "../util/validation.js";
+import Component from "./BaseComponent.js";
 
-import ProjectState from "../store/ProjectState.js";
-import Component from "./Component.js";
-
-const projectState = ProjectState.getInstance();
-
-// Validation
-
-interface Validatable {
-	value: string | number;
-	required?: boolean;
-	minLength?: number;
-	maxLength?: number;
-	min?: number;
-	max?: number;
-}
-
-function validate(validatableInput: Validatable) {
-	let isValid = true;
-
-	if (validatableInput.required) {
-		isValid = isValid && validatableInput.value.toString().trim().length !== 0;
-	}
-
-	if (
-		validatableInput.minLength != null &&
-		typeof validatableInput.value === "string"
-	) {
-		isValid =
-			isValid && validatableInput.value.length >= validatableInput.minLength;
-	}
-
-	if (
-		validatableInput.maxLength != null &&
-		typeof validatableInput.value === "string"
-	) {
-		isValid =
-			isValid && validatableInput.value.length <= validatableInput.maxLength;
-	}
-
-	if (
-		validatableInput.min != null &&
-		typeof validatableInput.value === "number"
-	) {
-		isValid = isValid && validatableInput.value >= validatableInput.min;
-	}
-
-	if (
-		validatableInput.max != null &&
-		typeof validatableInput.value === "number"
-	) {
-		isValid = isValid && validatableInput.value <= validatableInput.max;
-	}
-
-	return isValid;
-}
-
-// ProjectInput
-
-class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
+// ProjectInput Class
+export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
 	titleInputElement: HTMLInputElement;
 	descriptionInputElement: HTMLInputElement;
 	peopleInputElement: HTMLInputElement;
@@ -133,5 +79,3 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
 		}
 	}
 }
-
-export default ProjectInput;

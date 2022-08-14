@@ -1,9 +1,9 @@
-import autobind from "../decorators/autobind.js";
-import { Draggable } from "../types/Drag.js";
-import Component from "./Component.js";
-import Project from "./Project.js";
+import { autobind } from "../decorators/autobind.js";
+import { Draggable } from "../models/drag-drop.js";
+import { Project } from "../models/project.js";
+import Component from "./BaseComponent.js";
 
-class ProjectItem
+export class ProjectItem
 	extends Component<HTMLUListElement, HTMLLIElement>
 	implements Draggable
 {
@@ -31,9 +31,7 @@ class ProjectItem
 		event.dataTransfer!.effectAllowed = "move";
 	}
 
-	dragEndHandler(_: DragEvent) {
-		console.log("DragEnd");
-	}
+	dragEndHandler(_: DragEvent) {}
 
 	configure() {
 		this.element.addEventListener("dragstart", this.dragStartHandler);
@@ -46,5 +44,3 @@ class ProjectItem
 		this.element.querySelector("p")!.textContent = this.project.description;
 	}
 }
-
-export default ProjectItem;
