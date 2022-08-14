@@ -10,7 +10,7 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
 		newElementId?: string
 	) {
 		this.templateElement = document.getElementById(
-			"project-list"
+			templateId
 		)! as HTMLTemplateElement;
 		this.hostElement = document.getElementById(hostElementId)! as T;
 
