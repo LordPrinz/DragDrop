@@ -23,7 +23,7 @@ class ProjectState {
 
 	addProject(title: string, description: string, numOfPeople: number) {
 		const newProject = new Project(
-			this.id.next().value!.toString(),
+			this.id.next().value as string,
 			title,
 			description,
 			numOfPeople,
@@ -39,7 +39,7 @@ class ProjectState {
 		let id = 0;
 
 		while (true) {
-			yield id++;
+			yield (id++).toString();
 		}
 	}
 }
