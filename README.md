@@ -18,7 +18,7 @@ Simple project management app built in typescript.</div>
 
 ## Overview
 
-This app was created in Typescript. It includes form where you can create "projects" and two fields "active" and "finish" where you can move your "porjects"
+This app was created in Typescript. It includes form where you can create "projects" and two fields "active" and "finish" where you can move your "projects"
 
 ### Built With
 
