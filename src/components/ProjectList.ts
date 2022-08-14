@@ -6,6 +6,7 @@ import { DragTarget } from "../types/Drag.js";
 import autobind from "../decorators/autobind.js";
 
 const projectState = ProjectState.getInstance();
+
 class ProjectList
 	extends Component<HTMLDivElement, HTMLElement>
 	implements DragTarget
@@ -21,12 +22,22 @@ class ProjectList
 	}
 
 	@autobind
-	dragOverHandler(_: DragEvent) {
-		const listEl = this.element.querySelector("ul")!;
-		listEl.classList.add("droppable");
+	dragOverHandler(event: DragEvent) {
+		if (event.dataTransfer && event.dataTransfer.types[0] === "text/plain") {
+			event.preventDefault();
+			const listEl = this.element.querySelector("ul")!;
+			listEl.classList.add("droppable");
+		}
 	}
 
-	dropHandler(_: DragEvent) {}
+	@autobind
+	dropHandler(event: DragEvent) {
+		const prjId = event.dataTransfer!.getData("text/plain");
+		projectState.moveProject(
+			prjId,
+			this.type === "active" ? ProjectStatus.Active : ProjectStatus.Finished
+		);
+	}
 
 	@autobind
 	dragLeaveHandler(_: DragEvent) {

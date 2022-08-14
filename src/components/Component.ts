@@ -19,6 +19,7 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
 		if (newElementId) {
 			this.element.id = newElementId;
 		}
+
 		this.attach(insertAtStart);
 	}
 
