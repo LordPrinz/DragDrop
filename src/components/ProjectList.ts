@@ -1,6 +1,7 @@
-import ProjectState from "../store/ProjectState.js";
 import Component from "./Component.js";
 import Project, { ProjectStatus } from "./Project.js";
+import ProjectItem from "./ProjectItem.js";
+import ProjectState from "../store/ProjectState.js";
 
 const projectState = ProjectState.getInstance();
 
@@ -8,12 +9,13 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
 	assignedProjects: Project[];
 
 	constructor(private type: "active" | "finished") {
-		super("project-list", "app", false, `${type}-project`);
+		super("project-list", "app", false, `${type}-projects`);
 		this.assignedProjects = [];
 
 		this.configure();
 		this.renderContent();
 	}
+
 	configure() {
 		projectState.addListener((projects: Project[]) => {
 			const relevantProjects = projects.filter((prj) => {
@@ -40,9 +42,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
 		)! as HTMLUListElement;
 		listEl.innerHTML = "";
 		for (const prjItem of this.assignedProjects) {
-			const listItem = document.createElement("li");
-			listItem.textContent = prjItem.title;
-			listEl.appendChild(listItem);
+			new ProjectItem(this.element.querySelector("ul")!.id, prjItem);
 		}
 	}
 }
